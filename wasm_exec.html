@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Go wasm</title>
+</head>
+<body>
+	<form action="" method="post" id="add">
+		<input type="text" id="addText">
+		<input type="submit" value="submit" id="">
+	</form>
+
+	<ul id="todos"></ul>
+
+	<template id="todo">
+		<li>
+			<input type="checkbox" name="" class="todoCheck">
+			<label for="check"><span class="todoBody">予定ホゲホゲ</span></label>
+			<a href="#" class="todoDelete">delete</a>
+		</li>
+	</template>
+
+	<script src="wasm_exec.js"></script>
+	<script>
+		const go = new Go();
+		let mod, inst;
+		WebAssembly.instantiateStreaming(fetch("test.wasm"), go.importObject).then(async (result) => {
+			mod = result.module;
+			inst = result.instance;
+			await go.run(inst);
+		});
+	</script>
+</body>
+</html>
