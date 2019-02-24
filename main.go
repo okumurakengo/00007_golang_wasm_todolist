@@ -15,8 +15,10 @@ func load() {
 				return
 			}
 
+			// 新しいtodo用のDOMを作成
 			cloneElement := templateElement.Call("cloneNode", true)
 
+			// チェックボックスのイベント設定
 			cloneElement.
 				Call("querySelector", ".todoCheck").
 				Call("addEventListener", "change", js.NewEventCallback(js.PreventDefault, func(e js.Value) {
@@ -27,10 +29,12 @@ func load() {
 						Set("text-decoration", map[bool]string{true: "line-through", false: "none"}[e.Get("target").Get("checked").Bool()])
 				}))
 		
+			// todoの内容を設定
 			cloneElement.
 				Call("querySelector", ".todoBody").
 				Set("textContent", document.Call("getElementById", "addText").Get("value").String())
 
+			// 削除イベントを設定
 			cloneElement.
 				Call("querySelector", ".todoDelete").
 				Call("addEventListener", "click", js.NewEventCallback(js.PreventDefault, func(e js.Value) {
@@ -41,8 +45,10 @@ func load() {
 					}
 				}))
 
+			// 新しいtodoをhtmlに表示
 			document.Call("getElementById", "todos").Call("appendChild", cloneElement)
 
+			// 入力ボックスを空にしておく
 			document.Call("getElementById", "addText").Set("value", "")
 		}))
 }
